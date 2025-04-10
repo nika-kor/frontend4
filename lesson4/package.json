@@ -1,0 +1,11 @@
+{
+    "author": "nika",
+    "version": "1.0.0",
+    "description": "task 3",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    } 
+}
+    
+
