@@ -1,47 +1,15 @@
-// Створіть HTML-сторінку з кількома зображеннями, які будуть підлягати лінійному завантаженню. Наприклад, можна використовувати зображення з високою роздільною здатністю або зображення з важкими форматами.
-// Додайте data-src атрибут до тегів img, який містить посилання на зображення, яке необхідно завантажити.
-// Додайте CSS стилі, які забезпечують мінімальну висоту тегів img та фоновий колір для видимих зображень, які ще не завантажені. 
-// img { height: 200px; background-color: #f0f0f0; }
-// Створіть JavaScript-файл та імпортуйте IntersectionObserver.
-// Встановіть IntersectionObserver для кожного зображення з data-src атрибутом, яке потрібно завантажити.
-// Для кожного зображення, яке стає видимим, змініть його src атрибут на data-src та перестаньте спостерігати його.
-// Додайте додаткову функціональність, таку як анімацію завантаження або зображення-заповнювач, щоб покращити користувацький досвід.
-// Додатково, не обов’язково! Оптимізуйте завантаження зображень за допомогою WebP формату або скейлінга зображень до відповідної роздільної здатності, щоб зменшити обсяг завантажуваної інформації.
-// Перевірте результати за допомогою інструментів розробника браузера, таких як "Network" або "Performance", щоб переконатися, що зображення завантажуються тільки тоді, коли вони стають видимими на сторінці.
-// Додайте можливість завантажувати зображення тільки при натисканні на кнопку або при іншій дії користувача.
+const startBtn = document.querySelector('.hero-btn');
 
-
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const image = entry.target;
-            image.src = image.dataset.source;
-            observer.unobserve(image);
+let observer = new IntersectionObserver((entries) => {
+    entries.forEach((el) => {
+        if (el.isIntersecting) {
+            el.target.src = el.target.dataset.src;
         }
-    },
-    )
-}, {
-    rootMargin: '200px',
-    threshold: 0.5,
+    });
 });
 
-const images = document.querySelectorAll('img[data-source]');
-images.forEach(image => {
-    observer.observe(image);
+startBtn.addEventListener('click', () => {
+    document.querySelectorAll('.lazy-img').forEach((el) => {
+        observer.observe(el);
+    });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
