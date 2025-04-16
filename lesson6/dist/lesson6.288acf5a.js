@@ -1,0 +1,2 @@
+var e=globalThis,r={},t={},n=e.parcelRequire94c2;null==n&&((n=function(e){if(e in r)return r[e].exports;if(e in t){var n=t[e];delete t[e];var o={id:e,exports:{}};return r[e]=o,n.call(o.exports,o,o.exports),o.exports}var i=Error("Cannot find module '"+e+"'");throw i.code="MODULE_NOT_FOUND",i}).register=function(e,r){t[e]=r},e.parcelRequire94c2=n),n.register;var o=n("ikDdo"),i=n("lHqLo");document.getElementById("app").innerHTML=`${(0,o.greet)("Користувач")} <br> ${i.message}`;
+//# sourceMappingURL=lesson6.288acf5a.js.map

@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "parcel": "^2.14.4"
+  },
+
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html --dist-dir dist"
+  }
+}
+
+
+

@@ -1,0 +1,1 @@
+export const message = "Це повідомлення з модуля B.";
