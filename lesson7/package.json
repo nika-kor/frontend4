@@ -1,0 +1,13 @@
+{
+  "devDependencies": {
+    "parcel": "^2.14.4",
+    "parcel-transformer-hbs": "^1.0.4"
+  },
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "handlebars": "^4.7.8"
+  }
+}
