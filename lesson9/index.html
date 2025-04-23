@@ -1,55 +1,217 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <!-- Завдання:
-
-Створіть програму для зберігання контактів — ім'я, прізвище, телефон та електронна адреса. Зберігайте контакти в localStorage та дозволяйте користувачу додавати, видаляти та редагувати контакти. -->
-
-        <input type="text" id="name" placeholder="Name" />
-        <input type="text" id="surname" placeholder="Surname" />
-        <input type="text" id="phone" placeholder="Phone" />
-        <input type="text" id="email" placeholder="Email" />
-        <button id="save">Save</button>
-        <button id="delete">Delete</button>
-
-        <ul class="js-gallery"></ul>
-    <script type="module" src="./index.js"></script>
-</body><!DOCTYPE html>
 <html>
 <head>
-    <title>Книга контактів</title>
+    <title>Менеджер контактів</title>
     <style>
-        body { font-family: sans-serif; }
-        #contact-form, #contact-list { margin-bottom: 20px; padding: 15px; border: 1px solid #ccc; }
-        input[type="text"], button { margin-right: 10px; padding: 8px; }
-        li { margin-bottom: 5px; }
-        .edit-btn, .delete-btn { margin-left: 5px; cursor: pointer; }
+        body {
+            font-family: sans-serif;
+        }
+        #contact-form, #contact-list {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input, button {
+            padding: 8px;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+        }
+        button {
+            cursor: pointer;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        .edit-btn, .delete-btn {
+            margin-right: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            border: none;
+        }
+        .edit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
     </style>
 </head>
 <body>
-    <h1>Книга контактів</h1>
+    <h1>Менеджер контактів</h1>
 
     <div id="contact-form">
         <h2>Додати новий контакт</h2>
-        <input type="text" id="firstName" placeholder="Ім'я">
-        <input type="text" id="lastName" placeholder="Прізвище">
-        <input type="text" id="phone" placeholder="Телефон">
-        <input type="text" id="email" placeholder="Електронна адреса">
-        <button onclick="addContact()">Додати</button>
+        <input type="text" id="new-name" placeholder="Ім'я">
+        <input type="text" id="new-surname" placeholder="Прізвище">
+        <input type="text" id="new-phone" placeholder="Телефон">
+        <input type="email" id="new-email" placeholder="Електронна адреса">
+        <button onclick="addContact()">Додати контакт</button>
     </div>
 
     <div id="contact-list">
         <h2>Список контактів</h2>
-        <ul id="contacts">
-            </ul>
+        <table id="contacts-table">
+            <thead>
+                <tr>
+                    <th>Ім'я</th>
+                    <th>Прізвище</th>
+                    <th>Телефон</th>
+                    <th>Електронна адреса</th>
+                    <th>Дії</th>
+                </tr>
+            </thead>
+            <tbody id="contacts-body">
+                </tbody>
+        </table>
     </div>
 
-    <script type="module" src="./index.js"></script>
+    <script>
+        let contacts = loadContacts();
+        renderContacts();
+
+        function loadContacts() {
+            const storedContacts = localStorage.getItem('contacts');
+            return storedContacts ? JSON.parse(storedContacts) : [];
+        }
+
+        function saveContacts() {
+            localStorage.setItem('contacts', JSON.stringify(contacts));
+        }
+
+        function renderContacts() {
+            const contactsBody = document.getElementById('contacts-body');
+            contactsBody.innerHTML = '';
+            contacts.forEach((contact, index) => {
+                const row = contactsBody.insertRow();
+                const nameCell = row.insertCell();
+                const surnameCell = row.insertCell();
+                const phoneCell = row.insertCell();
+                const emailCell = row.insertCell();
+                const actionsCell = row.insertCell();
+
+                nameCell.textContent = contact.name;
+                surnameCell.textContent = contact.surname;
+                phoneCell.textContent = contact.phone;
+                emailCell.textContent = contact.email;
+
+                const editButton = document.createElement('button');
+                editButton.textContent = 'Редагувати';
+                editButton.classList.add('edit-btn');
+                editButton.onclick = () => editContact(index);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Видалити';
+                deleteButton.classList.add('delete-btn');
+                deleteButton.onclick = () => deleteContact(index);
+
+                actionsCell.appendChild(editButton);
+                actionsCell.appendChild(deleteButton);
+            });
+        }
+
+        function addContact() {
+            const nameInput = document.getElementById('new-name');
+            const surnameInput = document.getElementById('new-surname');
+            const phoneInput = document.getElementById('new-phone');
+            const emailInput = document.getElementById('new-email');
+
+            const newContact = {
+                name: nameInput.value.trim(),
+                surname: surnameInput.value.trim(),
+                phone: phoneInput.value.trim(),
+                email: emailInput.value.trim()
+            };
+
+            if (newContact.name && newContact.surname && newContact.phone && newContact.email) {
+                contacts.push(newContact);
+                saveContacts();
+                renderContacts();
+                nameInput.value = '';
+                surnameInput.value = '';
+                phoneInput.value = '';
+                emailInput.value = '';
+            } else {
+                alert('Будь ласка, заповніть усі поля.');
+            }
+        }
+
+        let editingIndex = -1; // Змінна для відстеження індексу контакту, що редагується
+
+        function editContact(index) {
+            editingIndex = index;
+            const contact = contacts[index];
+            const form = document.getElementById('contact-form');
+            form.innerHTML = `
+                <h2>Редагувати контакт</h2>
+                <input type="text" id="edit-name" placeholder="Ім'я" value="${contact.name}">
+                <input type="text" id="edit-surname" placeholder="Прізвище" value="${contact.surname}">
+                <input type="text" id="edit-phone" placeholder="Телефон" value="${contact.phone}">
+                <input type="email" id="edit-email" placeholder="Електронна адреса" value="${contact.email}">
+                <button onclick="saveEditedContact()">Зберегти зміни</button>
+                <button onclick="cancelEdit()">Скасувати</button>
+            `;
+        }
+
+        function saveEditedContact() {
+            if (editingIndex !== -1) {
+                const nameInput = document.getElementById('edit-name');
+                const surnameInput = document.getElementById('edit-surname');
+                const phoneInput = document.getElementById('edit-phone');
+                const emailInput = document.getElementById('edit-email');
+
+                contacts[editingIndex] = {
+                    name: nameInput.value.trim(),
+                    surname: surnameInput.value.trim(),
+                    phone: phoneInput.value.trim(),
+                    email: emailInput.value.trim()
+                };
+
+                saveContacts();
+                renderContacts();
+                resetContactForm();
+                editingIndex = -1;
+            }
+        }
+
+        function cancelEdit() {
+            resetContactForm();
+            editingIndex = -1;
+        }
+
+        function deleteContact(index) {
+            if (confirm('Ви впевнені, що хочете видалити цей контакт?')) {
+                contacts.splice(index, 1);
+                saveContacts();
+                renderContacts();
+            }
+        }
+
+        function resetContactForm() {
+            const contactForm = document.getElementById('contact-form');
+            contactForm.innerHTML = `
+                <h2>Додати новий контакт</h2>
+                <input type="text" id="new-name" placeholder="Ім'я">
+                <input type="text" id="new-surname" placeholder="Прізвище">
+                <input type="text" id="new-phone" placeholder="Телефон">
+                <input type="email" id="new-email" placeholder="Електронна адреса">
+                <button onclick="addContact()">Додати контакт</button>
+            `;
+        }
+    </script>
 </body>
-</html>
 </html>
