@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+    .circle {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        position: absolute;
+    }
+    #circle1 {
+        background-color: lightblue;
+        top: 50px;
+        left: 50px;
+    }
+    #circle2 {
+        background-color: lightcoral;
+        top: 150px;
+        left: 150px;
+    }
+
+    body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; margin: 0; background-color: #f0f0f0; }
+        .game-container { text-align: center; background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); }
+        .clickable { background-color: #007bff; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; margin-bottom: 20px; }
+        .clickable:hover { background-color: #0056b3; }
+        #score { font-size: 24px; margin-bottom: 10px; }
+        #timer { font-size: 18px; color: #555; }
+    </style>
+</head>
+<body>
+    <div id="circle1" class="circle"></div>
+    <div id="circle2" class="circle"></div>
+
+    <div class="game-container">
+        <div id="score">Рахунок: 0</div>
+        <button id="clickableElement" class="clickable">Натисни мене!</button>
+        <div id="timer">Час: 10 секунд</div>
+    </div>
+    <script type="module" src="./index.js"></script>
+    <script type="module" src="./game.js"></script>
+    <script type="module" src="./time-control.js"></script>
+</body>
+</html>
