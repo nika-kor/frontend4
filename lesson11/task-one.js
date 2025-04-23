@@ -1,46 +1,51 @@
+let totalSeconds = 60 * 60; // Початковий час - 1 година (60 хвилин * 60 секунд)
+const timerDisplay = document.getElementById('timer'); // Елемент, де відображатиметься таймер
+const messageDisplay = document.getElementById('message'); // Елемент для повідомлень (необов'язково)
+let timerInterval;
 
+function updateTimerDisplay() {
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+  const formattedTime = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  timerDisplay.textContent = formattedTime;
+}
 
+function checkHalfTime() {
+  if (totalSeconds === 30 * 60) {
+    messageDisplay.textContent = 'Залишилось менше половини часу!';
+    // Можна додати тут інші дії, наприклад, зміну стилю таймера
+  }
+}
 
-// Завдання 1
+function startTimer() {
+  timerInterval = setInterval(() => {
+    totalSeconds--;
+    updateTimerDisplay();
+    checkHalfTime();
 
-// Створити таймер, який буде починати відлік з 1 години та зменшувати час кожну хвилину. При досягненні 30 хвилин, таймер повинен відправляти повідомлення екран про те, що залишилось менше половини часу.
-
-const timer = document.querySelector('.timer');
-const timerSeconds = document.querySelector('.timer__seconds');
-const timerMinutes = document.querySelector('.timer__minutes');
-const timerHours = document.querySelector('.timer__hours');
-
-let hours = 1;
-let minutes = 0;
-let seconds = 0;
-
-const timerId = setInterval(() => {
-    seconds -= 1;
-    if (seconds < 0) {
-        seconds = 59;
-        minutes -= 1;
-        if (minutes < 0) {
-            minutes = 59;
-            hours -= 1;
-            if (hours < 0) {
-                clearInterval(timerId);
-            }
-        }
+    if (totalSeconds < 0) {
+      clearInterval(timerInterval);
+      messageDisplay.textContent = 'Час вийшов!';
+      // Можна додати тут дії після закінчення таймера
     }
-    timerSeconds.textContent = seconds < 10 ? `0${seconds}` : seconds;
-    timerMinutes.textContent = minutes < 10 ? `0${minutes}` : minutes;
-    timerHours.textContent = hours < 10 ? `0${hours}` : hours;
-}, 1000);
+  }, 1000); // Оновлення кожну секунду
+}
 
+// Для запуску таймера після завантаження сторінки
+document.addEventListener('DOMContentLoaded', () => {
+  // Перевіряємо, чи є на сторінці елемент з id 'timer'
+  if (!timerDisplay) {
+    const newTimerDisplay = document.createElement('div');
+    newTimerDisplay.id = 'timer';
+    document.body.appendChild(newTimerDisplay);
+  }
 
-
-
-
-
-
-
-
-
-
-
-
+  // Перевіряємо, чи є на сторінці елемент з id 'message'
+  if (!messageDisplay) {
+    const newMessageDisplay = document.createElement('div');
+    newMessageDisplay.id = 'message';
+    document.body.appendChild(newMessageDisplay);
+  }
+  updateTimerDisplay(); // Відображаємо початковий час
+  startTimer();
+});

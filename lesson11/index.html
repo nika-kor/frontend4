@@ -4,8 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        #timer-second {
+          font-size: 2em;
+        }
+      
+        #animation {
+          font-size: 3em;
+          color: red;
+          display: none; /* Приховати анімацію спочатку */
+        }
+      </style>
 </head>
 <body>
+    <div id="timer"></div>
+  <div id="message"></div>
+
+  <div id="timer-second">30.000</div>
+<div id="animation">🔥</div>
+<button id="startButton">Почати</button>
+
+
     <script type="module" src="./task-one.js"></script>
     <script type="module" src="./task-two.js"></script>
 </body>
