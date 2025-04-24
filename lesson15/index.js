@@ -1,94 +1,71 @@
-// import { alert, notice, info, success, error } from '@pnotify/core';
-// import '@pnotify/core/dist/PNotify.css';
-// import '@pnotify/core/dist/BrightTheme.css';
+import debounce from 'lodash.debounce';
+import { error, info } from '@pnotify/core';
+import '@pnotify/core/dist/PNotify.css';
+import '@pnotify/core/dist/BrightTheme.css';
+import countryListTemplate from './templates/country-list.hbs';
+import countryInfoTemplate from './templates/country-info.hbs';
+import fetchCountries from './fetchCountries';
 
-// import fetchCountries from './fetchCountries';
+const searchInput = document.querySelector('#country-input');
+const countryListContainer = document.querySelector('.country-list');
+const countryInfoContainer = document.querySelector('.country-info');
 
-const searchInput = document.querySelector('#searchInput');
-const countryList = document.querySelector('.country-list');
-const countryInfo = document.querySelector('.country-info');
-const countryListItemTemplate = document.querySelector('#country-list-item');
-const countryDetailsTemplate = document.querySelector('#country-details');
+const DEBOUNCE_DELAY = 500;
 
-const renderCountryList = countries => {
-    countryList.innerHTML = '';
-    countryInfo.innerHTML = '';
+function clearMarkup() {
+  countryListContainer.innerHTML = '';
+  countryInfoContainer.innerHTML = '';
+}
 
-    if (countries.length > 10) {
-        notice({
-            text: 'Занадто багато збігів. Будь ласка, уточніть свій запит.',
-            delay: 2000,
-        });
-        return;
-    }
+function displayCountriesList(countries) {
+  const markup = countryListTemplate(countries);
+  countryListContainer.innerHTML = markup;
+}
 
-    const listItems = countries.map(country => {
-        const listItem = countryListItemTemplate.content.cloneNode(true);
-        const img = listItem.querySelector('img');
-        const span = listItem.querySelector('span');
+function displayCountryInfo(country) {
+  const markup = countryInfoTemplate(country);
+  countryInfoContainer.innerHTML = markup;
+}
 
-        img.src = country.flags.svg;
-        img.alt = `Прапор ${country.name}`;
-        span.textContent = country.name;
-
-        listItem.querySelector('li').addEventListener('click', () => {
-            renderCountryDetails(country);
-        });
-
-        return listItem;
+function handleSearchResults(countries) {
+  if (countries.length > 10) {
+    info({
+      text: 'Занадто багато співпадінь. Будь ласка, введіть більш конкретний запит.',
+      delay: 2000,
     });
+    clearMarkup();
+  } else if (countries.length >= 2 && countries.length <= 10) {
+    displayCountriesList(countries);
+    countryInfoContainer.innerHTML = '';
+  } else if (countries.length === 1) {
+    displayCountryInfo(countries[0]);
+    countryListContainer.innerHTML = '';
+  } else {
+    error({
+      text: 'Країну не знайдено.',
+      delay: 2000,
+    });
+    clearMarkup();
+  }
+}
 
-    countryList.append(...listItems);
-};
+function onSearchInput(event) {
+  const searchQuery = event.target.value.trim();
 
-const renderCountryDetails = country => {
-    countryList.innerHTML = '';
-    countryInfo.innerHTML = '';
+  if (searchQuery) {
+    fetchCountries(searchQuery)
+      .then(handleSearchResults)
+      .catch(err => {
+        console.error('Помилка отримання даних:', err);
+        error({
+          text: 'Помилка отримання даних.',
+          delay: 2000,
+        });
+        clearMarkup();
+      });
+  } else {
+    clearMarkup();
+  }
+}
 
-    const detailsCard = countryDetailsTemplate.content.cloneNode(true);
-    detailsCard.querySelector('h2').textContent = country.name;
-    detailsCard.querySelector('p:nth-child(2) span').textContent = country.capital;
-    detailsCard.querySelector('p:nth-child(3) span').textContent = country.population.toLocaleString();
-    detailsCard.querySelector('p:nth-child(4) span').textContent = country.languages.map(lang => lang.name).join(', ');
-    detailsCard.querySelector('p:nth-child(5) span').textContent = country.currencies.map(curr => curr.name).join(', ');
-
-    countryInfo.appendChild(detailsCard);
-};
-
-const handleSearchInput = event => {
-    const searchQuery = event.target.value.trim();
-
-    if (searchQuery) {
-        fetchCountries(searchQuery)
-            .then(countries => {
-                if (countries.length > 0) {
-                    if (countries.length === 1) {
-                        renderCountryDetails(countries[0]);
-                    } else {
-                        renderCountryList(countries);
-                    }
-                } else {
-                    error({
-                        text: 'Країну не знайдено.',
-                        delay: 2000,
-                    });
-                    countryList.innerHTML = '';
-                    countryInfo.innerHTML = '';
-                }
-            })
-            .catch(error => {
-                console.error('Помилка при отриманні даних:', error);
-                alert({
-                    text: 'Виникла помилка при отриманні даних. Спробуйте пізніше.',
-                    delay: 2000,
-                });
-                countryList.innerHTML = '';
-                countryInfo.innerHTML = '';
-            });
-    } else {
-        countryList.innerHTML = '';
-        countryInfo.innerHTML = '';
-    }
-};
-
-searchInput.addEventListener('input', handleSearchInput);
+searchInput.addEventListener('input', debounce(onSearchInput, DEBOUNCE_DELAY));

@@ -4,29 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Пошук країн</title>
-    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
-    <input type="text" id="searchInput" placeholder="Введіть назву країни...">
-    <ul class="country-list"></ul>
+    <input type="text" id="country-input" placeholder="Введіть назву країни...">
+    <div class="country-list"></div>
     <div class="country-info"></div>
-
-    <template id="country-list-item">
-        <li>
-            <img src="" alt="Прапор країни" width="50">
-            <span></span>
-        </li>
-    </template>
-
-    <template id="country-details">
-        <div>
-            <h2></h2>
-            <p><b>Столиця:</b> <span></span></p>
-            <p><b>Населення:</b> <span></span></p>
-            <p><b>Мови:</b> <span></span></p>
-            <p><b>Валюти:</b> <span></span></p>
-        </div>
-    </template>
 
     <script type="module" src="./index.js"></script>
     <script type="module" src="./fetchCountries.js"></script>
