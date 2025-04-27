@@ -3,13 +3,14 @@ body {
     margin: 20px;
 }
 
-input[type="text"] {
+input {
     padding: 10px;
     margin-bottom: 15px;
     width: 300px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
+    
 }
 
 .country-list {
@@ -32,6 +33,21 @@ input[type="text"] {
 
 .country-list img {
     margin-right: 10px;
+}
+
+.wrap{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 50px;
+}
+
+h2 {
+    text-align: center;
+}
+img {
+    width: 300px;
 }
 
 .country-info h2 {

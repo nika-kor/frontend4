@@ -4,11 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Пошук країн</title>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.21/lodash.min.js"></script>
+    <link
+    href="node_modules/@pnotify/core/dist/PNotify.css"
+    rel="stylesheet"
+    type="text/css"
+    />
+    <link
+        href="node_modules/@pnotify/core/dist/Material.css"
+        rel="stylesheet"
+        type="text/css"
+    />
+    <script type="module">
+        import * as PNotify from "./node_modules/@pnotify/core/dist/PNotify.js";
+    </script>
     <link rel="stylesheet" href="./style.css"/>
 </head>
 <body>
     <input type="text" id="country-input" placeholder="Введіть назву країни...">
-    <div class="country-list"></div>
+    <ul class="country-list"></ul>
     <div class="country-info"></div>
 
     <script type="module" src="./index.js"></script>

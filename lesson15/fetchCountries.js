@@ -3,7 +3,7 @@ export default function fetchCountries(searchQuery) {
     const ENDPOINT = '/name';
     const fields = 'fields=name,capital,population,flags,languages';
   
-    return fetch(`${BASE_URL}${ENDPOINT}/${searchQuery}?${fields}`)
+    return fetch(`${BASE_URL}${ENDPOINT}/${searchQuery}/?${fields}`)
       .then(response => {
         if (!response.ok) {
           throw new Error(response.status);
