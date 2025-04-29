@@ -1,6 +1,13 @@
-const clickableElement = document.getElementById('clickableElement');
+const clickableElement1 = document.getElementById('circle1');
+const clickableElement2 = document.getElementById('circle2');
 const scoreDisplay = document.getElementById('score');
 const timerDisplay = document.getElementById('timer');
+
+const gameContainer = document.querySelector('.game-container');
+
+
+const endGame = document.createElement('p');
+gameContainer.appendChild(endGame);
 
 let score = 0;
 let timeLeft = 10;
@@ -14,8 +21,12 @@ function updateTimer() {
     timerDisplay.textContent = `Час: ${timeLeft} секунд`;
     if (timeLeft <= 0) {
         clearInterval(gameInterval);
-        clickableElement.disabled = true;
-        clickableElement.textContent = 'Гра закінчена!';
+        clickableElement1.disabled = true;
+        clickableElement2.disabled = true;
+        endGame.textContent = 'Гра закінчена!';
+
+        clickableElement1.removeEventListener('click', handleClick);
+        clickableElement2.removeEventListener('click', handleClick);
     }
     timeLeft--;
 }
@@ -30,12 +41,12 @@ function startGame() {
     timeLeft = 10;
     updateScore();
     updateTimer();
-    clickableElement.disabled = false;
-    clickableElement.textContent = 'Натисни мене!';
+    clickableElement1.disabled = false;
+    clickableElement2.disabled = false;
     gameInterval = setInterval(updateTimer, 1000);
 }
 
-clickableElement.addEventListener('click', handleClick);
+clickableElement1.addEventListener('click', handleClick);
+clickableElement2.addEventListener('click', handleClick);
 
-// Запускаємо гру при завантаженні сторінки
 startGame();

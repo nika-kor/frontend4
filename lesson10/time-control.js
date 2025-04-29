@@ -1,16 +1,21 @@
+
+
+const timeInput = document.getElementById("time-input");
+const timeReturn = document.querySelector(".time-return");
+
 function timeControl() {
-    const timeInSeconds = parseInt(prompt("Введіть час в секундах:"));
+  const timeInSeconds = parseInt(timeInput.value);
   
-    if (isNaN(timeInSeconds) || timeInSeconds <= 0) {
-      alert("Будь ласка, введіть коректне позитивне число секунд.");
-      return;
-    }
-  
-    setTimeout(function() {
-      alert(`Час вийшов! Пройшло ${timeInSeconds} секунд.`);
-    }, timeInSeconds * 1000);
-  
-    console.log(`Таймер встановлено на ${timeInSeconds} секунд.`);
+  if (isNaN(timeInSeconds) || timeInSeconds <= 0) {
+    timeReturn.textContent = "Будь ласка, введіть коректне позитивне число секунд.";
+    return;
   }
   
-  timeControl();
+  setTimeout(function() {
+    timeReturn.textContent = `Час вийшов! Пройшло ${timeInSeconds} секунд.`;
+  }, timeInSeconds * 1000);
+  
+  timeReturn.textContent = `Таймер встановлено на ${timeInSeconds} секунд.`;
+}
+  
+timeInput.addEventListener("input", timeControl);
